@@ -26,4 +26,34 @@ where o.ownerid=p.ownerid and p.petid=h.petid
 and h.proceduretype=d.proceduretype and h.proceduresubcode=d.proceduresubcode
 order by 1, 2;
 
+--how many pets from each city?
+
+select city, count(*)
+from pets left join owners using(ownerid)
+group by city;
+
+-- average price of procedure by kind of pet
+
+select kind, avg(price)
+from procedurehistory left join pets using(petid)
+  join proceduredetails using(proceduretype, proceduresubcode)
+group by kind
+order by 2 desc;
+
+/*Why there are procedures w/ NULL kind?
+I ran the below query and found that there are petid's in procedurehistory 
+that do not appear in pets table*/
+
+select *
+from procedurehistory left join pets using(petid);
+
+--what are the top 5 pet names?
+
+select name, count(distinct petid)
+from pets
+group by name
+order by 2 desc
+limit 5;
+
+
 
